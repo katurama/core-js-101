@@ -310,8 +310,15 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let arr = String(num).split('').map((n) => +n);
+  let sum = arr.reduce((pV, cV) => pV + cV);
+  if (sum > 9) {
+    arr = String(sum).split('');
+    sum = arr.map((n) => +n).reduce((pV, cV) => pV + cV);
+    return sum;
+  }
+  return sum;
 }
 
 
@@ -336,8 +343,32 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const openBrackets = ['[', '(', '<', '{'];
+  const closedBrackets = [']', ')', '>', '}'];
+  const arr = str.split('');
+  let sum = 0;
+  const obj = {};
+  if (arr.length % 2 !== 0) {
+    return false;
+  }
+  for (let i = 0; i < arr.length; i += 1) {
+    if (openBrackets.indexOf(arr[i]) !== -1) {
+      obj[sum] = arr[i];
+      sum += 1;
+    } else if (closedBrackets.indexOf(arr[i]) !== -1) {
+      if (sum === 0) {
+        return false;
+      }
+      const index = closedBrackets.indexOf(arr[i]);
+      if (obj[sum - 1] === openBrackets[index]) {
+        sum -= 1;
+      } else {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 
